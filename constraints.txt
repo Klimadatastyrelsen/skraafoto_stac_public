@@ -1,0 +1,3 @@
+# build-time pins for unbounded transitive deps that have since broken this stack
+# uvloop 0.22 removed loop auto-creation from get_event_loop, crashes uvicorn 0.13
+uvloop<0.22
