@@ -2,6 +2,7 @@
 
 # TODO: replace with stac-pydantic
 """
+import json
 from datetime import datetime
 from geojson_pydantic.geometries import (
     GeometryCollection,
@@ -427,6 +428,20 @@ class STACSearch(BaseModel):
     def validate_filter(cls, values: Dict) -> Dict:
         """Validate filter fields."""
         if "filter" in values and values["filter"]:
+            # GET requests deliver filter as a json string, decode before add_filter_crs mutates it
+            if isinstance(values["filter"], str):
+                try:
+                    values["filter"] = json.loads(values["filter"])
+                except json.JSONDecodeError:
+                    raise ValidationError(
+                        [
+                            ErrorWrapper(
+                                ValueError("The input cql-json could not be parsed"),
+                                "STACSearch",
+                            )
+                        ],
+                        STACSearch,
+                    )
             # Validate filter-lang
             if "filter_lang" in values and values["filter_lang"] != "cql-json":
                 raise ValidationError(
