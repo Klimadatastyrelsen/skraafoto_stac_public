@@ -52,6 +52,8 @@ class Queryables:
         "skraafotos2017": SkraafotosProperties,
         "skraafotos2019": SkraafotosProperties,
         "skraafotos2021": SkraafotosProperties,
+        "skraafotos2023": SkraafotosProperties,
+        "skraafotos2025": SkraafotosProperties,
         # "test-collection": SkraafotosProperties,
     }
 
