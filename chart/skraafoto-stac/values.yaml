@@ -1,0 +1,49 @@
+replicaCount: 2
+
+image:
+  repository: ghcr.io/klimadatastyrelsen/skraafoto_stac_public
+  # tag defaults to .Chart.AppVersion when empty - keeps chart and image in lockstep
+  tag: ""
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  host: ""
+  tls: []
+
+# name of an existing secret with keys POSTGRES_USER and POSTGRES_PASS
+postgres:
+  existingSecret: ""
+  host: ""
+  port: "5432"
+  dbname: ""
+  applicationName: skraafoto-stac
+
+cogtilerBasepath: ""
+
+# client ips whose x-forwarded-* headers are honoured, exact match only
+# "*" trusts every in-cluster pod, only safe behind a networkpolicy
+trustedHosts: ""
+
+webConcurrency: "4"
+debug: "FALSE"
+environment: production
+
+resources:
+  requests:
+    cpu: 250m
+    memory: 512Mi
+  limits:
+    memory: 1Gi
+
+nodeSelector: {}
+tolerations: []
+affinity: {}

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "skraafoto-stac.fullname" . }}
+  labels:
+    {{- include "skraafoto-stac.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - name: http
+      port: {{ .Values.service.port }}
+      targetPort: http
+  selector:
+    {{- include "skraafoto-stac.selectorLabels" . | nindent 4 }}
