@@ -3,4 +3,4 @@ name: skraafoto-stac
 description: Skraafoto STAC API (stac-fastapi + sqlalchemy)
 type: application
 version: 0.1.0
-appVersion: "2.1.3"
+appVersion: "2.1.4"
