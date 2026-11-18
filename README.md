@@ -1,29 +1,25 @@
-# stac-api 📚🗄️
+# skraafotodistribution-stac-api
 
-## skraafotodistribution-stac-api
-
-SDFI implementation of STAC API.
+SDFI implementation of STAC API for oblique aerial photos (skråfotos).
 
 Original code:
-```
+
+```text
 MIT License
 Copyright (c) 2020 Arturo AI
 ```
 
-# Dokumentation
-En lynintroduktion findes under [How To Get Started](./dokumentation.md/#how-to-get-started). Mere uddybende dokumentation findes i [./dokumentation.md](./dokumentation.md)
+How to use the API (Danish): [docs/site/dokumentation.md](docs/site/dokumentation.md). For a quick start, see [How to get started](docs/site/dokumentation.md#how-to-get-started).
 
----
+## Update 2023.06.13
 
-
-### Update 2023.06.13
 Python image locked to version 3.8.5 as higher versionen introduces a bug with pip where egg files isn't created linking to stac_fastapi dev install. Most likely newer version of pip is the issue.
 
 ## Configuration
 
 The application is configured using environment variables. These may be put in a file `/.env` like
 
-```.env
+```bash
 WEB_CONCURRENCY=10
 DEBUG=TRUE
 POSTGRES_USER=my_user
@@ -41,13 +37,17 @@ COGTILER_BASEPATH=https://skraafotodistribution-tile-api.k8s-test-121.septima.dk
 ### Running with docker compose
 
 To run it simply add your configuration in an `.env` file as described above and use:
-`docker compose build`
-`docker compose up`
+
+```bash
+docker compose build
+docker compose up
+```
 
 Now you can look at the api at http://localhost:8081/.
 
-### Running with docker compose
-Remember to attach debugger Python: Remote Attach
+### Debugging with docker compose
+
+`docker-compose.vscode.yml` starts the API under debugpy and waits for a debugger on port 5678. Remember to attach debugger Python: Remote Attach.
 
 ### Debugging with docker
 
@@ -148,30 +148,38 @@ Now you should be able to hit "Start debugging" `Docker: Python - Fastapi` which
 Pytest use the configuration from the `.env`.
 Pytest requires the modules to be installed in editable mode. To do this correctly, we use Anaconda.
 
-`conda create --name skraafoto-stac-api python=3.9`
+```bash
+conda create --name skraafoto-stac-api python=3.9
+```
 
 On my machine it was also needed to run:
 
-`conda bash init`
+```bash
+conda bash init
+```
 
 Now activate the environment:
 
-`conda activate skraafoto-stac-api`
+```bash
+conda activate skraafoto-stac-api
+```
 
 Go to the projects folder in the environment.
 
 Install the packages in this order:
 
-```
-  pip install wheel && \
-  pip install -e "./src/stac_fastapi/api[dev]" && \
-  pip install -e "./src/stac_fastapi/types[dev]" && \
-  pip install -e "./src/stac_fastapi/extensions[dev]"
+```bash
+pip install wheel && \
+pip install -e "./src/stac_fastapi/api[dev]" && \
+pip install -e "./src/stac_fastapi/types[dev]" && \
+pip install -e "./src/stac_fastapi/extensions[dev]"
 ```
 
 Now install the SQLalchemy implementation:
 
-`pip install -e "./src/stac_fastapi/sqlalchemy[dev,server]"`
+```bash
+pip install -e "./src/stac_fastapi/sqlalchemy[dev,server]"
+```
 
 And finally you should be able to run `pytest src` on the commandline, and have VScode discover the tests using the `testing` icon in the left-hand toolbar (it looks like a chemestry vial). Make sure VScode has the proper python interpreter configured, it should be something like `~\anaconda3\envs\skraafoto-stac-api\python.exe` or `~\Miniconda3\envs\skraafoto-stac-api\python.exe`. It can be set typing `CTRL + SHIFT + P` -> `Python: Select interpreter` and then finding the new interpreter. If you can't find it, you need to reload VSCode.
 

@@ -1,6 +1,10 @@
-# Skraafoto STAC API - Dokumentation
+---
+description: Søg efter skråfotos og deres metadata med Skraafoto STAC API, og hent og vis billederne.
+---
 
-<h2 id="skraafoto-introduktion">Introduktion</h2>
+# Skraafoto STAC API
+
+## Introduktion
 
 Skraafoto-stac-api bygger på API-specifikationen STAC (Spatio Temporal Asset Catalog), en nyere API-standard med formål at forene dynamisk søgning og forespørgsler af geospatielt data.
 API'et følger specifikationen angivet i [stac-api-spec](https://github.com/radiantearth/stac-api-spec) og [OGC API - Features](https://ogcapi.ogc.org/features/), tidligere kaldt WFS3.
@@ -13,7 +17,7 @@ STAC API'ets core består af tre komponenter:
 
 Der opereres med collections, som indeholder en samling af items.
 
- ![Relationship between collection with items](https://raw.githubusercontent.com/SDFIdk/skraafoto_stac_public/main/media/Skr%C3%A5foto-STAC-API.svg)
+![Relationship between collection with items](https://raw.githubusercontent.com/SDFIdk/skraafoto_stac_public/main/media/Skr%C3%A5foto-STAC-API.svg)
 
 ### STAC API
 
@@ -100,7 +104,8 @@ Selve APIet, der udstiller metadata i form af [STAC Items](#stac-item) organiser
 
 `Items` er inddelt i `Collections`, således at en `Collection` består af logisk beslægtede `Items`. For eksempel er skråfotos inddelt i en `Collection` per årgang.
 
-**Bemærk** at en `Collection` består af aggregeret spatiel og tidslig udstrækning for `Items` hørende til denne `Collection`, som man kan se et eksempel af i ovenstående `details`.
+> [!NOTE]
+> En `Collection` består af aggregeret spatiel og tidslig udstrækning for `Items` hørende til denne `Collection`, som vist i eksemplet ovenfor.
 
 Dataelementerne returneret i en `Collection` er beskrevet i [STAC Collection Specificationen](https://github.com/radiantearth/stac-spec/blob/master/collection-spec/collection-spec.md).
 
@@ -305,7 +310,8 @@ Se afsnittet [Download og visning af billeder](#download-og-visning-af-billeder)
 
 ## Endpoints og outputs
 
-**Bemærk** at Dataforsyningens service kræver gyldig token, som kan erhverves på [https://dataforsyningen.dk](https://dataforsyningen.dk).
+> [!NOTE]
+> Dataforsyningens service kræver gyldig token, som kan erhverves på [https://dataforsyningen.dk](https://dataforsyningen.dk).
 
 Servicen returnerer GeoJSON/JSON, medmindre en forespørgsel er ugyldig pga. uautoriseret token, i så fald returneres text.
 Hvis token er autoriseret, men requesten har en ugyldig parameter, returneres en JSON fejlmeddelelse.
@@ -374,7 +380,7 @@ _Parametre_
 | ------------- | -------- | --------------- |
 | collectionid  | string   | ID'et på en collection. |
 | itemid        | string   | ID'et på et item. |
-| crs           | string   | Default: `http://www.opengis.net/def/crs/OGC/1.3/CRS84`, understøtter også `http://www.opengis.net/def/crs/EPSG/0/25832` <br>Angiver hvilket koordinatsystem geometrier i JSON response skal returneres i. Se [Crs Extension](#crs-extension).</br> |
+| crs           | string   | Default: `http://www.opengis.net/def/crs/OGC/1.3/CRS84`, understøtter også `http://www.opengis.net/def/crs/EPSG/0/25832`. Angiver hvilket koordinatsystem geometrier i JSON response skal returneres i. Se [Crs Extension](#crs-extension). |
 
 _Output_
 
@@ -406,17 +412,17 @@ _Parametre_
 
 | **Parameter** | **Type**  | **Description** |
 | ------------- | --------- | --------------- |
-| crs           | string    | Default: `http://www.opengis.net/def/crs/OGC/1.3/CRS84`, understøtter også `http://www.opengis.net/def/crs/EPSG/0/25832` <br>Angiver hvilket koordinatsystem geometrier i JSON response skal returneres i. Se [Crs Extension](#crs-extension).</br> |
-| limit         | integer   | Default: 10, maks: 1000 <br>Angiver maks antallet af `Item` objekter i JSON response (page size). Se [Context Extension](#context-extension).<br/> |
+| crs           | string    | Default: `http://www.opengis.net/def/crs/OGC/1.3/CRS84`, understøtter også `http://www.opengis.net/def/crs/EPSG/0/25832`. Angiver hvilket koordinatsystem geometrier i JSON response skal returneres i. Se [Crs Extension](#crs-extension). |
+| limit         | integer   | Default: 10, maks: 1000. Angiver maks antallet af `Item` objekter i JSON response (page size). Se [Context Extension](#context-extension). |
 | pt            | string    | Page token. Angiver en bestemt side, der skal fremsøges i forhold til paging. Se [Context Extension](#context-extension). |
 | ids           | \[string] | Array af `Item` ID'er. |
 | bbox          | \[number] | Array af fire tal. Returner kun items inden for denne box. Kan ikke angives samtidig med `intersects`. Standard sorteringen korteste afstand mellem geometriens centoride og footprint af skråfotos. |
-| bbox-crs      | string    | Default: `http://www.opengis.net/def/crs/OGC/1.3/CRS84`, understøtter også `http://www.opengis.net/def/crs/EPSG/0/25832`. <br>Angiver hvilket koordinatsystem geometrier i `bbox` er angivet i.</br> |
+| bbox-crs      | string    | Default: `http://www.opengis.net/def/crs/OGC/1.3/CRS84`, understøtter også `http://www.opengis.net/def/crs/EPSG/0/25832`. Angiver hvilket koordinatsystem geometrier i `bbox` er angivet i. |
 | intersects    | string    | GeoJSON geometri, se [Geometries](https://en.wikipedia.org/wiki/GeoJSON#Geometries) for typer. Returner kun items, der overlapper denne geometri. Kan ikke angives samtidig med `bbox`. Standard sorteringen korteste afstand mellem geometriens centoride og footprint af skråfotos.|
 | datetime      | string    | Dato og tid formateret efter [RFC 3339, sektion 5.6](https://tools.ietf.org/html/rfc3339#section-5.6). Kan være en enkelt dato og tid eller intervaller separeret med `/`. Der kan bruges to punktummer `..` for et åbent dato- og tidsinterval. |
 | filter        | string    | `CQL-JSON` udtryk til avanceret søgninger på specifikke `Item` properties. Se [Filter Extension](#filter-extension). I forbindelse med en `GET search` denne parameter URL encodes. Hvis der er angivet en geometry, er standard sorteringen korteste afstand mellem geometriens centoride og footprint af skråfotos.  |
-| filter-lang   | string    | Default: `CQL-JSON` <br>Angiver hvilket query-sprog filteret er skrevet i. Se [Filter Extension](#filter-extension).</br> |
-| filter-crs    | string    | Default: `http://www.opengis.net/def/crs/OGC/1.3/CRS84`, understøtter også `http://www.opengis.net/def/crs/EPSG/0/25832`. <br>Angiver hvilket koordinatsystem geometrier i `filter` er angivet i. Se [Filter Extension](#filter-extension).</br> |
+| filter-lang   | string    | Default: `CQL-JSON`. Angiver hvilket query-sprog filteret er skrevet i. Se [Filter Extension](#filter-extension). |
+| filter-crs    | string    | Default: `http://www.opengis.net/def/crs/OGC/1.3/CRS84`, understøtter også `http://www.opengis.net/def/crs/EPSG/0/25832`. Angiver hvilket koordinatsystem geometrier i `filter` er angivet i. Se [Filter Extension](#filter-extension). |
 | collections   | \[string] | Default: Søgning over alle collections. |
 | sortby        | string    | Angiver en sorteringsorden resultatet returneres i. Se [Sort Extension](#sort-extension). |
 
@@ -489,16 +495,16 @@ _Parametre_
 | **Parameter** | **Type**  | **Description** |
 | ------------- | --------- | --------------- |
 | collectionid  | string    | ID'et på en collection. |
-| crs           | string    | Default: `http://www.opengis.net/def/crs/OGC/1.3/CRS84`, understøtter også `http://www.opengis.net/def/crs/EPSG/0/25832` <br>Angiver hvilket koordinatsystem geometrier i JSON response skal returneres i. Se [Crs Extension](#crs-extension).</br> |
-| limit         | integer   | Default: 10, maks: 1000 <br>Angiver maks antallet af `Item` objekter i JSON response som objektet indeholder (page size). Se [Context Extension](#context-extension).<br/> |
+| crs           | string    | Default: `http://www.opengis.net/def/crs/OGC/1.3/CRS84`, understøtter også `http://www.opengis.net/def/crs/EPSG/0/25832`. Angiver hvilket koordinatsystem geometrier i JSON response skal returneres i. Se [Crs Extension](#crs-extension). |
+| limit         | integer   | Default: 10, maks: 1000. Angiver maks antallet af `Item` objekter i JSON response som objektet indeholder (page size). Se [Context Extension](#context-extension). |
 | pt            | string    | Angiver en bestemt side, der skal fremsøges i forhold til paging. Se [Context Extension](#context-extension). |
 | ids           | \[string] | Array af `Item` ID'er. |
 | bbox          | \[number] | Array af fire tal. Returner kun items inden for denne box. Standard sorteringen korteste afstand mellem geometriens centoride og footprint af skråfotos. |
-| bbox-crs      | string    | Default: `http://www.opengis.net/def/crs/OGC/1.3/CRS84`, understøtter også `http://www.opengis.net/def/crs/EPSG/0/25832`. <br>Angiver hvilket koordinatsystem geometrier i `bbox` er angivet i.</br> |
+| bbox-crs      | string    | Default: `http://www.opengis.net/def/crs/OGC/1.3/CRS84`, understøtter også `http://www.opengis.net/def/crs/EPSG/0/25832`. Angiver hvilket koordinatsystem geometrier i `bbox` er angivet i. |
 | datetime      | string    | Dato og tid formateret efter [RFC 3339, sektion 5.6](https://tools.ietf.org/html/rfc3339#section-5.6). Kan være en enkelt dato og tid eller intervaller separeret med `/`. Der kan bruges to punktummer `..` for et åbent dato- og tidsinterval. |
 | filter        | string    | `CQL-JSON` udtryk til avanceret søgninger på specifikke `Item` properties. Se [Filter Extension](#filter-extension). Denne parameter skal URL encodes. Hvis der er angivet en geometry, er standard sorteringen korteste afstand mellem geometriens centoride og footprint af skråfotos. |
-| filter-lang   | string    | Default: `CQL-JSON` <br>Angiver hvilket query-sprog filteret er skrevet i. Se [Filter Extension](#filter-extension).</br> |
-| filter-crs    | string    | Default: `http://www.opengis.net/def/crs/OGC/1.3/CRS84`, understøtter også `http://www.opengis.net/def/crs/EPSG/0/25832`. <br>Angiver hvilket koordinatsystem geometrier `filter` er angivet i. Se [Filter Extension](#filter-extension).</br> |
+| filter-lang   | string    | Default: `CQL-JSON`. Angiver hvilket query-sprog filteret er skrevet i. Se [Filter Extension](#filter-extension). |
+| filter-crs    | string    | Default: `http://www.opengis.net/def/crs/OGC/1.3/CRS84`, understøtter også `http://www.opengis.net/def/crs/EPSG/0/25832`. Angiver hvilket koordinatsystem geometrier `filter` er angivet i. Se [Filter Extension](#filter-extension). |
 
 _Output_
 
@@ -592,7 +598,7 @@ Context extension tilføjer ekstra information omkring en returneret `FeatureCol
 - Limit: Det maksimale antal resultater returneret
 - Matched: Det totale antal resultater, der matcher søgeforespørgslen
 
-Hvis `matched` er større end `limit` kan linkrelationerne `next`/`previous` bruges til at navigere frem og tilbage i det totale antal matchede søgeresultater ved hjælp af paging. Parameteren `limit` bestemmer hvor mange `Item` objekter, der fremgår i det returneret JSON response. `limit`har et max på 1000 resultater ad gangen. Paging fungerer ved hjælp af en "paging token" `pt`. Denne token er autogenereret, og skal altid følge paging-resultatet. Ved ændring af denne kan resultatet ikke fremfindes. Et eksempel på paged resultat kan ses til højre.
+Hvis `matched` er større end `limit` kan linkrelationerne `next`/`previous` bruges til at navigere frem og tilbage i det totale antal matchede søgeresultater ved hjælp af paging. Parameteren `limit` bestemmer hvor mange `Item` objekter, der fremgår i det returneret JSON response. `limit`har et max på 1000 resultater ad gangen. Paging fungerer ved hjælp af en "paging token" `pt`. Denne token er autogenereret, og skal altid følge paging-resultatet. Ved ændring af denne kan resultatet ikke fremfindes. Et eksempel på paged resultat kan ses ovenfor.
 
 Nærmere beskrivelse af [Context Extension](https://github.com/radiantearth/stac-api-spec/tree/master/fragments/context).
 
@@ -660,7 +666,8 @@ Filter extension tilføjer særlig funktionalitet til at søge ved hjælp af for
 CQL-JSON kan bruges i `GET` og `POST` requests.
 I `GET` requests skal URL'en URL encodes.
 
-**Bemærk** at det SQL statement, som API'et udfører, maks må tage 10 sekunder. Hvis din forespørgsel er så kompliceret at den timer ud, så kan det i nogle tilfælde afhælpes ved at begrænse forespørgslen med `bbox` og/eller `datetime` parameteren (se ovenfor).
+> [!NOTE]
+> Det SQL statement, som API'et udfører, må maks tage 10 sekunder. Hvis din forespørgsel er så kompliceret at den timer ud, så kan det i nogle tilfælde afhælpes ved at begrænse forespørgslen med `bbox` og/eller `datetime` parameteren (se ovenfor).
 
 Eksempler på brug af filter parameter:
 
@@ -844,9 +851,10 @@ Nærmere beskrivelse af [Sort Extension](https://github.com/radiantearth/stac-ap
 
 Der er flere muligheder for at gå fra de returnerede metadata (se [STAC Item](#stac-item)) til det beskrevne billede.
 
-Relevante links findes i sektionen `links` hhv `assets`, kan ses ude til højre i et JSON response eksempel.
+Relevante links findes i sektionerne `links` og `assets`, som vist i JSON response eksemplet ovenfor.
 
-**Bemærk** at alle links til dataforsyningen kræver angivelsen af `token` enten i header eller query parameter.
+> [!NOTE]
+> Alle links til dataforsyningen kræver angivelsen af `token` enten i header eller query parameter.
 
 **Download**
 
@@ -903,7 +911,7 @@ x0 = sensor_cols * 0.5 + ppo_x / pixel_size
 y0 = sensor_rows * 0.5 + ppo_y / pixel_size
 ```
 
-Først etableres en række variable ud fra flyfotoets metadata (Se [STAC Item](#stac-item)), som kan ses ude til højre.
+Først etableres en række variable ud fra flyfotoets metadata (Se [STAC Item](#stac-item)), som vist i koden ovenfor.
 
 Dernæst kan `(xa, ya)` beregnes på en af to måder. Bemærk i øvrigt, at pixelkoordinaterne `(xa, ya)` har origo i billedets nederste venstre hjørne med x-aksen positiv mod højre og y-aksen positiv op.
 For at finde `Z` koordinaten skal man finde den tilsvarende pixel på jorden, hvor man kan bruge højdemodellen, [her som REST](https://datafordeler.dk/dataoversigt/danmarks-hoejdemodel-dhm/koter/).
@@ -935,18 +943,11 @@ Guiden er en hurtig gennemgang af, hvordan man får skråfotos for et bestemt ge
 
 - **Skåfoto STAC API** leverer metadata om skråfotos. Dens URL starter med `https://api.dataforsyningen.dk/rest/skraafoto_api/v1.0`, men for at bruge URL'en er det et krav, at der bliver specificeret paths og query parameters.
 - **Skåfoto Server** leverer skråfotos som [Cloud Optimized Geotiff](https://www.cogeo.org) (`COG`), hvor der kan bruges range request. Dens URL starter med `https://cdn.dataforsyningen.dk/skraafoto_server`, men for at bruge URL'en er det et krav, at der bliver specificeret paths og query parameters.
-- **Skråfoto Cogtiler** oversætter COG-formatet til JPG, der ikke understøtter COG, se mere i afsnittet [Download og visning af billeder](#download-og-visning-af-billeder). Dens URL starter med `https://api.dataforsyningen.dk/rest/skraafoto_cogtiler/v1.0`, men for at bruge URL'en er det et krav, at der bliver specificeret paths og query parameters. Cogtilers openapi dokumentation findes [her](#skraafoto_cogtiler).
+- **Skråfoto Cogtiler** oversætter COG-formatet til JPG, der ikke understøtter COG, se mere i afsnittet [Download og visning af billeder](#download-og-visning-af-billeder). Dens URL starter med `https://api.dataforsyningen.dk/rest/skraafoto_cogtiler/v1.0`, men for at bruge URL'en er det et krav, at der bliver specificeret paths og query parameters.
 
-<table class="center" style="width:100%">
-  <tr>
-     <th>For klienter med understøttelse af COGs</th>
-     <th>Klienter UDEN COG support</th>
-  </tr>
-  <tr>
-    <td><img src="https://raw.githubusercontent.com/SDFIdk/skraafoto_stac_public/main/media/Skr%C3%A5fotodistribution-HTTPServer.svg" alt="For klienter med understøttelse af COGs" width="300px"></td>
-    <td><img src="https://raw.githubusercontent.com/SDFIdk/skraafoto_stac_public/main/media/Skr%C3%A5fotodistribution-TileServer.svg" alt="Klienter UDEN COG support" width="300px"></td>
-  </tr>
- </table>
+| For klienter med understøttelse af COGs | Klienter UDEN COG support |
+| --- | --- |
+| ![For klienter med understøttelse af COGs](https://raw.githubusercontent.com/SDFIdk/skraafoto_stac_public/main/media/Skr%C3%A5fotodistribution-HTTPServer.svg) | ![Klienter UDEN COG support](https://raw.githubusercontent.com/SDFIdk/skraafoto_stac_public/main/media/Skr%C3%A5fotodistribution-TileServer.svg) |
 
 #### Eksempel 1
 
