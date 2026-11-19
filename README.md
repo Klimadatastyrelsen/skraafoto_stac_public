@@ -11,39 +11,19 @@ Copyright (c) 2020 Arturo AI
 
 How to use the API (Danish): [docs/site/dokumentation.md](docs/site/dokumentation.md). For a quick start, see [How to get started](docs/site/dokumentation.md#how-to-get-started).
 
-## Update 2023.06.13
-
-Python image locked to version 3.8.5 as higher versionen introduces a bug with pip where egg files isn't created linking to stac_fastapi dev install. Most likely newer version of pip is the issue.
-
-## Configuration
-
-The application is configured using environment variables. These may be put in a file `/.env` like
-
-```bash
-WEB_CONCURRENCY=10
-DEBUG=TRUE
-POSTGRES_USER=my_user
-POSTGRES_PASS=my_password
-POSTGRES_DBNAME=database_name
-POSTGRES_HOST=database_host
-POSTGRES_PORT=5432
-POSTGRES_APPLICATION_NAME=my_debug_application
-# Base path of the proxying tile server
-COGTILER_BASEPATH=https://skraafotodistribution-tile-api.k8s-test-121.septima.dk/cogtiler
-```
-
 ## Development
 
-### Running with docker compose
+### Running with Docker Compose
 
-To run it simply add your configuration in an `.env` file as described above and use:
+The API needs a PostgreSQL database with PostGIS and the Skråfoto tables and data. The default Compose file starts only the API.
+
+Copy [.env.example](.env.example) to `.env` in the repository root. Enter the database connection details and the COG tiler base URL, then start the API:
 
 ```bash
-docker compose build
-docker compose up
+docker compose up --build
 ```
 
-Now you can look at the api at http://localhost:8081/.
+Open http://localhost:8081/.
 
 ### Debugging with docker compose
 
@@ -152,10 +132,10 @@ Pytest requires the modules to be installed in editable mode. To do this correct
 conda create --name skraafoto-stac-api python=3.9
 ```
 
-On my machine it was also needed to run:
+If you use Bash and have not initialized Conda, run this command and restart your shell:
 
 ```bash
-conda bash init
+conda init bash
 ```
 
 Now activate the environment:
